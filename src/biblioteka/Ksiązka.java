@@ -5,11 +5,13 @@
  */
 package biblioteka;
 
+import java.io.Serializable;
+
 /**
  *
  * @author PC
  */
-public class Ksiązka extends Produkt {
+public class Ksiązka extends Produkt implements Serializable {
 
     private int iloscDostepna;
 
@@ -23,5 +25,15 @@ public class Ksiązka extends Produkt {
     public String toString() {
         return tytul + iloscDostepna;
     }
+
+    public void setIloscDostepna(int iloscDostepna) {
+        this.iloscDostepna = iloscDostepna;
+    }
+
+    public int getIloscDostepna() {
+        return iloscDostepna;
+    }
+    
+    
 
 }

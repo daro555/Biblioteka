@@ -21,6 +21,8 @@ public class Biblioteka {
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ClassNotFoundException {
         BibliotekaMagazyn s = new BibliotekaMagazyn();
+        s.otworzPlikBinarnyOsoby();
+        s.otworzPlikBinarnyKsiązki();
         int wybor;
         String imie;
         String nazwisko;
@@ -57,15 +59,16 @@ public class Biblioteka {
                 Scanner skaner4 = new Scanner(System.in);
                 iloscDostepna = skaner4.nextInt();
                 Ksiązka ksiazka = new Ksiązka(tytul, iloscDostepna);
-                s.dodajKsiazke(ksiazka);// będy bez Comparable, Serializable!
+                s.dodajKsiazke(ksiazka, iloscDostepna);// będy bez Comparable, Serializable!
+                s.wyswieltKsiazkiWBibliotece();
 
-                s.zapisDoPlikuBinarnieKsiązki();
+                //s.zapisDoPlikuBinarnieKsiązki();
 
                 break;
             case 3:
                 System.out.println("Lista osób w bibliotece");
                 //s.wyswietlOsobyZapisane();
-                s.otworzPlikBinarnyOsoby();
+                //s.otworzPlikBinarnyOsoby();
                 s.wyswietlOsobyZapisane();
                 //s.usunWszystkieOsoby();
                 //s.zapisDoPlikuBinarnieOsoby();
@@ -78,12 +81,16 @@ public class Biblioteka {
                 s.wyswietlKsiązkiWolne();
                 Scanner skaner5 = new Scanner(System.in);
                 tytul = skaner5.next();
-                //s.wyswietlOsobyZapisane();
+                System.out.println("Osoby zapisane:" );
+                s.wyswietlOsobyZapisane();
+                System.out.println("Podaj dane uzytkownika: imie");
                 Scanner skaner7 = new Scanner(System.in);
                 imie = skaner7.nextLine();
+                System.out.println("Podaj dane uzytkownika: nazwisko");
                 Scanner skaner8 = new Scanner(System.in);
                 nazwisko = skaner8.nextLine();
-                Osoba o = new Osoba(imie, nazwisko);
+           
+                Osoba o = new Osoba(imie, nazwisko);//dodanie wypozyczenia
                 s.dodajWypozyczenie(o, tytul);
 
                 break;
