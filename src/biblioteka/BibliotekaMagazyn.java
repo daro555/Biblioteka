@@ -27,7 +27,7 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
 
     List<Osoba> listaOsob;
     List<Ksiązka> listaKsiazek;
-    List<BibliotekaMagazyn> listaWypozyczen;
+    List<BibliotekaMagazyn> listaWypozyczen;//
     Map<Ksiązka, Integer> dostepnoscKsiazki;
 
     BibliotekaMagazyn() {
@@ -114,8 +114,9 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
 
     }
 
-    public void dodajWypozyczenie(Osoba o, String tytul) {
-        if (listaOsob.contains(o) && listaKsiazek.contains(tytul)) {
+    public void dodajWypozyczenie(Osoba o, String tytul) {//czy ksiązka jest dostepna + korekta ilosci; imie + nazwisko
+        Ksiązka k = new Ksiązka( tytul, 0);
+        if (listaOsob.contains(o) && listaKsiazek.contains(k)) {// trzeba zdefiniować equals!!
 
             listaWypozyczen.add(this);
 
@@ -126,7 +127,7 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     }
 
     public void usunWyporzyczenie(BibliotekaMagazyn w) {
-        listaWypozyczen.remove(w);
+        listaWypozyczen.remove(w);//equals zdefinować w Wypozyczenie + aktualizacja ilosci; do zrobienia
 
     }
 

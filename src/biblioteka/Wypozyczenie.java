@@ -11,5 +11,13 @@ package biblioteka;
  * @author PC
  */
 public class Wypozyczenie {
+    private Osoba osoba;
+    private Ksiązka ksiazka;
+
+    public Wypozyczenie(Osoba osoba, Ksiązka ksiazka) {
+        this.osoba = osoba;
+        this.ksiazka = ksiazka;
+    }
+    
     
 }

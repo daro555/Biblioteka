@@ -6,6 +6,7 @@
 package biblioteka;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -42,5 +43,32 @@ public class Osoba implements Serializable {
     public String toString() {
         return imie + nazwisko;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.imie);
+        hash = 47 * hash + Objects.hashCode(this.nazwisko);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Osoba other = (Osoba) obj;
+        if (!Objects.equals(this.imie, other.imie)) {
+            return false;
+        }
+        if (!Objects.equals(this.nazwisko, other.nazwisko)) {
+            return false;
+        }
+        return true;
+    }
+    
 
 }
