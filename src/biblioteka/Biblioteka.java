@@ -21,8 +21,23 @@ public class Biblioteka {
      */
     public static void main(String[] args) throws IOException, FileNotFoundException, ClassNotFoundException {
         BibliotekaMagazyn s = new BibliotekaMagazyn();
-        s.otworzPlikBinarnyOsoby();
-        s.otworzPlikBinarnyKsiązki();
+        try {
+            s.otworzPlikBinarnyOsoby();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Brak pliku z osobami");
+        }
+        try {
+            s.otworzPlikBinarnyKsiązki();
+        } catch (FileNotFoundException e) {
+            System.out.println("Brak pliku ksiązki");
+        }
+        try {
+            s.otworzPlikBinarnyWypozyczenia();
+        } catch (FileNotFoundException e) {
+            System.out.println("Brak pliku wypozyczenia");
+        }
+
         int wybor;
         String imie;
         String nazwisko;
@@ -34,6 +49,9 @@ public class Biblioteka {
         System.out.println("Dodanie ksiązki - 2");
         System.out.println("Lista osób w bibliotece - 3 ");
         System.out.println("Wypozyczenie książki - 4");
+        System.out.println("zwrot ksiązki - 5");
+        System.out.println("Lista ksiązek w bibliotece - 6");
+
         wybor = scaner.nextInt();
         switch (wybor) {
             case 1:
@@ -42,12 +60,12 @@ public class Biblioteka {
                 imie = skaner1.next();
                 Scanner skaner2 = new Scanner(System.in);
                 nazwisko = skaner2.next();
-                Osoba osoba = new Osoba(imie, nazwisko);
+
                 //s.usunWszystkieOsoby();
                 //s.otworzPlikBinarnyOsoby();
                 //s.usunWszystkieOsoby();
-                s.dodajCzytelnika(osoba);// czemu nie można wywołać metody bez s? i czemu obie linijki kodu dają błąd
-                s.zapisDoPlikuBinarnieOsoby();
+                s.dodajCzytelnika(imie, nazwisko);// czemu nie można wywołać metody bez s? i czemu obie linijki kodu dają błąd
+                //s.zapisDoPlikuBinarnieOsoby();
                 //s.zapiszDoPlikuText();
                 s.wyswietlOsobyZapisane();
 
@@ -58,11 +76,11 @@ public class Biblioteka {
                 tytul = skaner3.next();
                 Scanner skaner4 = new Scanner(System.in);
                 iloscDostepna = skaner4.nextInt();
-                Ksiązka ksiazka = new Ksiązka(tytul, iloscDostepna);
-                s.dodajKsiazke(ksiazka, iloscDostepna);// będy bez Comparable, Serializable!
+
+                s.dodajKsiazke(tytul, iloscDostepna);// będy bez Comparable, Serializable!
                 s.wyswieltKsiazkiWBibliotece();
 
-                //s.zapisDoPlikuBinarnieKsiązki();
+                s.zapisDoPlikuBinarnieKsiązki();
 
                 break;
             case 3:
@@ -81,7 +99,7 @@ public class Biblioteka {
                 s.wyswietlKsiązkiWolne();
                 Scanner skaner5 = new Scanner(System.in);
                 tytul = skaner5.next();
-                System.out.println("Osoby zapisane:" );
+                System.out.println("Osoby zapisane:");
                 s.wyswietlOsobyZapisane();
                 System.out.println("Podaj dane uzytkownika: imie");
                 Scanner skaner7 = new Scanner(System.in);
@@ -89,14 +107,28 @@ public class Biblioteka {
                 System.out.println("Podaj dane uzytkownika: nazwisko");
                 Scanner skaner8 = new Scanner(System.in);
                 nazwisko = skaner8.nextLine();
-           
-                Osoba o = new Osoba(imie, nazwisko);//dodanie wypozyczenia
-                s.dodajWypozyczenie(o, tytul);
+
+                //Osoba o = new Osoba(imie, nazwisko);//dodanie wypozyczenia
+                s.dodajWypozyczenie(imie, nazwisko, tytul);
 
                 break;
-            case 9:
+            case 5:
+                System.out.println("Podaj dane osoby zwracającej");
+                Scanner skaner9 = new Scanner(System.in);
+                imie = skaner9.next();
+                Scanner skaner10 = new Scanner(System.in);
+                nazwisko = skaner10.next();
+                Scanner skaner11 = new Scanner(System.in);
+                tytul = skaner11.next();
+                s.zwrotWyporzyczenia(imie, nazwisko, tytul);
+            case 6:
+                s.wyswietlKsiązkiWolne();
+
                 return;
         }
+        s.zapisDoPlikuBinarnieOsoby();
+        s.zapisDoPlikuBinarnieKsiązki();
+        s.zapisDoPlikuBinarnieWypozyczenie();
     }
 
 }

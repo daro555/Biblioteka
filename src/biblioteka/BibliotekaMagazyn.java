@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package biblioteka;
 
 import java.io.FileInputStream;
@@ -14,10 +9,6 @@ import java.io.ObjectOutputStream;
 import java.io.*;
 import java.util.*;
 
-/**
- *
- * @author PC
- */
 public class BibliotekaMagazyn implements Comparable, Serializable {
 
     private String imie;
@@ -26,50 +17,51 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     private int iloscDostepna;
 
     List<Osoba> listaOsob;
-    List<Ksiązka> listaKsiazek;
-    List<BibliotekaMagazyn> listaWypozyczen;//
+    //List<Ksiązka> listaKsiazek;
+    List<Wypozyczenie> listaWypozyczen;//
     Map<Ksiązka, Integer> dostepnoscKsiazki;
 
     BibliotekaMagazyn() {
         listaOsob = new ArrayList<>();
-        listaKsiazek = new ArrayList<>();//usunac!
+        //listaKsiazek = new ArrayList<>();//usunac!
         listaWypozyczen = new ArrayList<>();
         dostepnoscKsiazki = new HashMap<>();
 
     }
 
-    public BibliotekaMagazyn(Osoba o, Ksiązka k) {//przerobic na klase wypozyczenie; 
+    //public BibliotekaMagazyn(Osoba o, Ksiązka k) {//przerobic na klase wypozyczenie; 
+    //this.imie = o.getImie();
+    //this.nazwisko = o.getNazwisko();
+    //this.tytul = k.getTytul();
+    //}
+    public void dodajKsiazke(String tytul, int iloscDostepna) {
+        Ksiązka k = new Ksiązka(tytul, iloscDostepna);
 
-        this.imie = o.getImie();
-        this.nazwisko = o.getNazwisko();
-        this.tytul = k.getTytul();
-
-    }
-
-    public void dodajKsiazke(Ksiązka p, int iloscDostepna) {
-        //p.setIloscDostepna(iloscDostepna);
-        //listaKsiazek.add(p);
-        if (dostepnoscKsiazki.containsKey(p)) {//czy ksiązka już jest w bibliotece
+        if (dostepnoscKsiazki.containsKey(k)) {//czy ksiązka już jest w bibliotece
             int ilosc;
-            ilosc = dostepnoscKsiazki.get(p);
-            dostepnoscKsiazki.put(p, ilosc + iloscDostepna);
+            ilosc = dostepnoscKsiazki.get(k);
+            dostepnoscKsiazki.put(k, ilosc + iloscDostepna);
         } else {
-            dostepnoscKsiazki.put(p, iloscDostepna);// dodaje ilosc do ilosci w bibliotece
+            dostepnoscKsiazki.put(k, iloscDostepna);// dodaje ilosc do ilosci w bibliotece
         }
     }
 
     public void listaKsiązek() {
-        System.out.println(listaKsiazek);
+        System.out.println(dostepnoscKsiazki);
     }
 
-    public void usunKsiązke(Ksiązka p) {
-        listaKsiazek.remove(p);
+    public void usunKsiązkeZBiblioteki(String tytul) {
+        Ksiązka k = new Ksiązka(tytul, 0);//Czy mozna przekazać produkt; chyba nie?
+        if (listaWypozyczen.contains(k)) {
+            System.out.println("Ksiązka została wczesniej wypozyczona");
+            System.out.println("Osoba przechowująca ksiązkę");//jak to sprawdzić kto ma ksiązkę?
+        }
+        dostepnoscKsiazki.remove(k);
     }
 
-    public void dodajOsoba(Osoba o) {
-        listaOsob.add(o);
-    }
-
+    //public void dodajOsoba(Osoba o) {
+    //    listaOsob.add(o);
+    //}
     public void usunWszystkieOsoby() {
         listaOsob.removeAll(listaOsob);
     }
@@ -83,9 +75,16 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     }
 
     public void zapisDoPlikuBinarnieKsiązki() throws FileNotFoundException, IOException {
-        FileOutputStream fileoutpustream = new FileOutputStream("Książki.bin");
+        FileOutputStream fileoutpustream = new FileOutputStream("Ksiazki.bin");
         ObjectOutputStream objectoutputsream = new ObjectOutputStream(fileoutpustream);
-        objectoutputsream.writeObject(listaKsiazek);
+        objectoutputsream.writeObject(dostepnoscKsiazki);
+        objectoutputsream.close();
+    }
+
+    public void zapisDoPlikuBinarnieWypozyczenie() throws FileNotFoundException, IOException {
+        FileOutputStream fileoutpustream = new FileOutputStream("ListaWypozyczen.bin");
+        ObjectOutputStream objectoutputsream = new ObjectOutputStream(fileoutpustream);
+        objectoutputsream.writeObject(listaWypozyczen);
         objectoutputsream.close();
     }
 
@@ -106,28 +105,57 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
 
     }
 
-    public void otworzPlikBinarnyKsiązki() throws FileNotFoundException, IOException, ClassNotFoundException {
-        FileInputStream fileinputstream = new FileInputStream("Osoby.bin");
+    public void otworzPlikBinarnyWypozyczenia() throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream fileinputstream = new FileInputStream("ListaWypozyczen.bin");
         ObjectInputStream objectinputsream = new ObjectInputStream(fileinputstream);
-        listaKsiazek = (List<Ksiązka>) objectinputsream.readObject();
+        listaWypozyczen = (List<Wypozyczenie>) objectinputsream.readObject();
         objectinputsream.close();
 
     }
 
-    public void dodajWypozyczenie(Osoba o, String tytul) {//czy ksiązka jest dostepna + korekta ilosci; imie + nazwisko
-        Ksiązka k = new Ksiązka( tytul, 0);
-        if (listaOsob.contains(o) && listaKsiazek.contains(k)) {// trzeba zdefiniować equals!!
+    public void otworzPlikBinarnyKsiązki() throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream fileinputstream = new FileInputStream("Ksiazki.bin");
+        ObjectInputStream objectinputsream = new ObjectInputStream(fileinputstream);
+        dostepnoscKsiazki = (Map<Ksiązka, Integer>) objectinputsream.readObject();
+        objectinputsream.close();
 
-            listaWypozyczen.add(this);
+    }
 
+    public void zwrotWyporzyczenia(String imie, String nazwisko, String tytul) {//czy ksiązka jest dostepna + korekta ilosci; imie + nazwisko
+        Ksiązka k = new Ksiązka(tytul, 0);
+        Osoba o = new Osoba(imie, nazwisko);
+        if (listaOsob.contains(o) && dostepnoscKsiazki.containsValue(tytul)) {// trzeba zdefiniować equals!!
+
+            int ilosc;
+            ilosc = dostepnoscKsiazki.get(k);
+            ilosc--;
+            dostepnoscKsiazki.put(k, ilosc);
+
+            Wypozyczenie w = new Wypozyczenie(o, k);
+
+            listaWypozyczen.add(w);
         } else {
             System.out.println("Brak ksiązki w bibliotece lub wypozyczjącego");
         }
 
     }
 
-    public void usunWyporzyczenie(BibliotekaMagazyn w) {
-        listaWypozyczen.remove(w);//equals zdefinować w Wypozyczenie + aktualizacja ilosci; do zrobienia
+    public void dodajWypozyczenie(String imie, String nazwisko, String tytul) {
+        Osoba o = new Osoba(imie, nazwisko);
+        Ksiązka k = new Ksiązka(tytul, 0);
+        if (listaOsob.contains(o) && dostepnoscKsiazki.containsValue(tytul)) {// trzeba zdefiniować equals!!
+
+            int ilosc;
+            ilosc = dostepnoscKsiazki.get(k);
+
+            dostepnoscKsiazki.put(k, ilosc + iloscDostepna);
+
+            Wypozyczenie w = new Wypozyczenie(o, k);
+
+            listaWypozyczen.add(w);
+        } else {
+            System.out.println("Podano zły tytuł lub czytelnika");
+        }
 
     }
 
@@ -136,16 +164,35 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     }
 
     public void wyswietlKsiązkiWolne() {
-        System.out.println(listaKsiazek);
+        int iloscDostepna;
+        for (Ksiązka k   : dostepnoscKsiazki.keySet()) {
+            if (k.getIloscDostepna()!= 0) {
+                System.out.println(k);
+            } else {
+                System.out.println("Brak wolnych ksiązek do wypożyczenia");
+            }
+        }
     }
 
-    public void dodajCzytelnika(Osoba o) {
-        dodajOsoba(o);
+    public void dodajCzytelnika(String imie, String nazwisko) {
+        Osoba o = new Osoba(imie, nazwisko);
+        if (listaOsob.contains(o)) {
+            System.out.println("Osoba już jest w bibliotece");
+        } else {
+            listaOsob.add(o);
+        }
 
     }
 
-    public void usunCzytelnika(Osoba o) {
-        listaOsob.remove(o);
+    public void usunCzytelnika(String imie, String nazwisko) {
+        Osoba o = new Osoba(imie, nazwisko);
+        if (listaOsob.contains(o) && !listaWypozyczen.contains(o)) {
+
+            listaOsob.remove(o);
+
+        } else {
+            System.out.println("Takiego czytelnika nie ma w bibiotece lub nie zrócił książki");
+        }
     }
 
     public void wyswietlOsobyZapisane() {
@@ -153,7 +200,7 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     }
 
     public void wyswieltKsiazkiWBibliotece() {
-        System.out.println(listaKsiazek);
+        System.out.println(dostepnoscKsiazki);
     }
 
     @Override

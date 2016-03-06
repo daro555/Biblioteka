@@ -1,5 +1,7 @@
 package biblioteka;
 
+import java.util.Objects;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,6 +20,33 @@ public class Wypozyczenie {
         this.osoba = osoba;
         this.ksiazka = ksiazka;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.osoba);
+        hash = 47 * hash + Objects.hashCode(this.ksiazka);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Wypozyczenie other = (Wypozyczenie) obj;
+        if (!Objects.equals(this.osoba, other.osoba)) {
+            return false;
+        }
+        if (!Objects.equals(this.ksiazka, other.ksiazka)) {
+            return false;
+        }
+        return true;
+    }
+    
     
     
 }

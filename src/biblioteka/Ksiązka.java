@@ -35,5 +35,6 @@ public class Ksiązka extends Produkt implements Serializable {
     }
     
     
+    
 
 }
