@@ -1,5 +1,7 @@
 package biblioteka;
 
+import java.io.*;
+import java.util.Calendar;
 import java.util.Objects;
 
 /*
@@ -12,13 +14,16 @@ import java.util.Objects;
  *
  * @author PC
  */
-public class Wypozyczenie {
+public class Wypozyczenie implements Serializable{
     private Osoba osoba;
     private Ksiązka ksiazka;
+    
+   
 
     public Wypozyczenie(Osoba osoba, Ksiązka ksiazka) {
         this.osoba = osoba;
         this.ksiazka = ksiazka;
+        
     }
 
     @Override
@@ -46,6 +51,12 @@ public class Wypozyczenie {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Wypozyczenie{" + "osoba=" + osoba + ", ksiazka=" + ksiazka + '}';
+    }
+    
     
     
     

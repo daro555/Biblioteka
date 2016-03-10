@@ -41,7 +41,7 @@ public class Osoba implements Serializable {
 
     @Override
     public String toString() {
-        return imie + nazwisko;
+        return imie +" "+ nazwisko;
     }
 
     @Override

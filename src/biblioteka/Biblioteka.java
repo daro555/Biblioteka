@@ -51,13 +51,16 @@ public class Biblioteka {
         System.out.println("Wypozyczenie książki - 4");
         System.out.println("zwrot ksiązki - 5");
         System.out.println("Lista ksiązek w bibliotece - 6");
+        System.out.println("Lista wypozyczen -7");
 
         wybor = scaner.nextInt();
         switch (wybor) {
             case 1:
                 System.out.println("zapisanie się do biblioteki");
+                System.out.println("Podaj imię:");
                 Scanner skaner1 = new Scanner(System.in);
                 imie = skaner1.next();
+                System.out.println("Podaj nazwisko:");
                 Scanner skaner2 = new Scanner(System.in);
                 nazwisko = skaner2.next();
 
@@ -123,7 +126,9 @@ public class Biblioteka {
                 s.zwrotWyporzyczenia(imie, nazwisko, tytul);
             case 6:
                 s.wyswietlKsiązkiWolne();
-
+                break;
+            case 7:
+                s.wyswietlWypozyczenia();
                 return;
         }
         s.zapisDoPlikuBinarnieOsoby();

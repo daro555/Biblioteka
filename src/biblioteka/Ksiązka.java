@@ -23,7 +23,7 @@ public class Ksiązka extends Produkt implements Serializable {
 
     @Override
     public String toString() {
-        return tytul + iloscDostepna;
+        return "tytuł: "+ tytul + ";" +"iloscDostepna" +iloscDostepna;
     }
 
     public void setIloscDostepna(int iloscDostepna) {
@@ -33,6 +33,7 @@ public class Ksiązka extends Produkt implements Serializable {
     public int getIloscDostepna() {
         return iloscDostepna;
     }
+    
     
     
     

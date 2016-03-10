@@ -47,6 +47,7 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     }
 
     public void listaKsiązek() {
+        System.out.println("Lista wszystkich ksiązek w bibliotece:");
         System.out.println(dostepnoscKsiazki);
     }
 
@@ -124,16 +125,18 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     public void zwrotWyporzyczenia(String imie, String nazwisko, String tytul) {//czy ksiązka jest dostepna + korekta ilosci; imie + nazwisko
         Ksiązka k = new Ksiązka(tytul, 0);
         Osoba o = new Osoba(imie, nazwisko);
-        if (listaOsob.contains(o) && dostepnoscKsiazki.containsValue(tytul)) {// trzeba zdefiniować equals!!
+        if (listaOsob.contains(o) && dostepnoscKsiazki.containsKey(k)) {//trzeba zdefiniować equals!!
 
             int ilosc;
             ilosc = dostepnoscKsiazki.get(k);
-            ilosc--;
+            ilosc++;
             dostepnoscKsiazki.put(k, ilosc);
 
             Wypozyczenie w = new Wypozyczenie(o, k);
 
             listaWypozyczen.add(w);
+            Calendar koniec = Calendar.getInstance();//dopisane
+            //WypozyczenieCzas wcz = new WypozyczenieCzas(null,koniec,w);//dopisane
         } else {
             System.out.println("Brak ksiązki w bibliotece lub wypozyczjącego");
         }
@@ -143,27 +146,33 @@ public class BibliotekaMagazyn implements Comparable, Serializable {
     public void dodajWypozyczenie(String imie, String nazwisko, String tytul) {
         Osoba o = new Osoba(imie, nazwisko);
         Ksiązka k = new Ksiązka(tytul, 0);
-        if (listaOsob.contains(o) && dostepnoscKsiazki.containsValue(tytul)) {// trzeba zdefiniować equals!!
+        
+        if (listaOsob.contains(o) && dostepnoscKsiazki.containsKey(k)) {// trzeba zdefiniować equals!!
 
             int ilosc;
             ilosc = dostepnoscKsiazki.get(k);
 
-            dostepnoscKsiazki.put(k, ilosc + iloscDostepna);
+            dostepnoscKsiazki.put(k, ilosc - iloscDostepna);
 
             Wypozyczenie w = new Wypozyczenie(o, k);
 
             listaWypozyczen.add(w);
+            Calendar poczatek = Calendar.getInstance();//dopisane
+            //WypozyczenieCzas wcz = new WypozyczenieCzas(poczatek,null,w);//dopisane test
         } else {
             System.out.println("Podano zły tytuł lub czytelnika");
-        }
+        
+    }
 
     }
 
     public void wyswietlWypozyczenia() {
+        System.out.println("Lista wszystkich wypozyczeń:");
         System.out.println(listaWypozyczen.toString());
     }
 
     public void wyswietlKsiązkiWolne() {
+        System.out.println("Lista dostepnych książek:");
         int iloscDostepna;
         for (Ksiązka k   : dostepnoscKsiazki.keySet()) {
             if (k.getIloscDostepna()!= 0) {

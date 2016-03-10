@@ -5,13 +5,14 @@
  */
 package biblioteka;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author PC
  */
-public class Produkt {
+public class Produkt implements Serializable{//błąd wynikał z braku implementacji Serializable w klasie produkt; czemu?
     public String tytul;
 
     public Produkt(String tytul) {
